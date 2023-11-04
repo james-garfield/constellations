@@ -18,6 +18,7 @@ flags:
 files: 
     - src/libraylib.a
     - src/components/object.cpp
+    - src/components/collider.cpp
     - src/components/drag.cpp
     - src/main.cpp
 

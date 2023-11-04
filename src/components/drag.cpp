@@ -15,16 +15,34 @@ void Drag::Update()
     this->texture.width = this->size.x;
 
     // Check if the mouse is over the Drag object
-    Vector2 mousePosition = GetMousePosition();
-    if (mousePosition.x == this->position.x && mousePosition.y == this->position.y)
+    if (this->isMouseOver())
     {
-        // Check if the mouse is pressed
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsMouseButtonPressed(MOUSE_MIDDLE_BUTTON))
+        // Check if the left or middle mouse button is pressed
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             this->isDragging = true;
-            this->SetPosition(mousePosition);
         }
     }
+    else
+    {
+        // Check if the left or middle mouse button is released
+        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+        {
+            this->isDragging = false;
+        }
+    }
+
+    // If dragging, update the position to the mouse position
+    if (this->isDragging)
+    {
+        this->SetPosition(GetMousePosition());
+    }
+}
+
+bool Drag::isMouseOver()
+{
+    Vector2 mousePosition = GetMousePosition();
+    return CheckCollisionPointRec(mousePosition, {this->position.x, this->position.y, this->size.x, this->size.y});
 }
 
 void Drag::SetTexture(const char *filename)

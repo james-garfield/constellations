@@ -31,4 +31,9 @@ private:
      * The "Image" for the Drag.
      */
     Texture2D texture;
+
+    /**
+     * Check if the mouse is over the Drag object.
+    */
+    bool isMouseOver();
 };

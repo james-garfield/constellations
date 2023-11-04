@@ -23,6 +23,7 @@
 
 #include "raylib.h"
 #include "drag.hpp"
+#include <iostream>
 
 Drag testImage = Drag();
 
@@ -55,6 +56,20 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         testImage.Update();
+
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            std::cout << "Left Mouse Button Pressed\n";
+        }
+        if (IsMouseButtonPressed(MOUSE_MIDDLE_BUTTON))
+        {
+            std::cout << "Middle Mouse Button Pressed\n";
+        }
+        if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
+        {
+            std::cout << "Right Mouse Button Pressed\n";
+        }
+
         //----------------------------------------------------------------------------------
 
         // Draw
