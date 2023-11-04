@@ -22,6 +22,9 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include "drag.hpp"
+
+Drag testImage = Drag();
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -42,12 +45,16 @@ int main(void)
     // NOTE: This functionality is not available on Android or HTML5 platforms
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
+    testImage.SetSize({100, 100});
+    testImage.SetPosition({screenWidth / 2, screenHeight / 2});
+    testImage.SetTexture("assets/images/person.png");
+
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
+        testImage.Update();
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -55,8 +62,8 @@ int main(void)
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
-
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+            testImage.Draw();
+            // testImage.ShowRectangle(BLACK);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
