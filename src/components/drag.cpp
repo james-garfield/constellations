@@ -17,25 +17,27 @@ void Drag::Update()
     // Check if the mouse is over the Drag object
     if (this->isMouseOver())
     {
-        // Check if the left or middle mouse button is pressed
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        // Check if the left mouse button is pressed
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
         {
             this->isDragging = true;
         }
     }
-    else
+    // Check if the left mouse button is released
+    if (IsMouseButtonUp(MOUSE_LEFT_BUTTON))
     {
-        // Check if the left or middle mouse button is released
-        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-        {
-            this->isDragging = false;
-        }
+        this->isDragging = false;
     }
 
     // If dragging, update the position to the mouse position
     if (this->isDragging)
     {
-        this->SetPosition(GetMousePosition());
+        // Center the image on the actual mouse pointer.
+        Vector2 mousePosition = GetMousePosition();
+        mousePosition.x -= this->size.x / 2;
+        mousePosition.y -= this->size.y / 2;
+
+        this->SetPosition(mousePosition);
     }
 }
 
