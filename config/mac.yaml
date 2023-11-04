@@ -3,7 +3,7 @@
 
 compiler: clang++ # Change to whatever will compile your c/c++ code. You can even use emscripten!
 name: Constellations # The name of the project, used for debugging.
-output: constellations # The output file.
+output: builc/g++/constellations # The output file.
 
 # These are the flags that will be passed to the compiler, such as -std=c++17
 flags: 

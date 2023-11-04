@@ -1,3 +1,5 @@
 /raylib
 # The application that is built. Should be built on each machine using pymake-cli.
 *constellations
+/.vscode
+/build
