@@ -6,7 +6,7 @@
 
 void Drag::Init(Vector2 position, Vector2 size, std::string filename)
 {
-        this->SetPosition(position);
+    this->SetPosition(position);
     this->SetSize(size);
     this->SetTexture(filename);
 }
@@ -29,41 +29,19 @@ void Drag::Update()
     this->texture.height = this->size.y;
     this->texture.width = this->size.x;
 
-    // Check if the mouse is over the Drag object
-    if (this->IsMouseOver())
-    {
-        // If is currently not dragging, check if the left mouse button is pressed
-        if (!this->isDragging)
-        {
-            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-            {
-                std::cout << "Pressed\n";
-                // Check if the left mouse button is still being held down
-                if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
-                {
-                    std::cout << "Down\n";
-                    this->isDragging = true;
-                }
-            }
-        }
-
+    if (this->isDragging) {
+        this->MoveWithMouse();
     }
-    // If dragging, update the position to the mouse position
-    if (this->isDragging)
-    {
-        // Check if the left mouse button is released
-        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-        {
-            this->isDragging = false;
-            return;
-        }
-        // Center the image on the actual mouse pointer.
-        Vector2 mousePosition = GetMousePosition();
-        mousePosition.x -= this->size.x / 2;
-        mousePosition.y -= this->size.y / 2;
+}
 
-        this->SetPosition(mousePosition);
-    }
+void Drag::MoveWithMouse()
+{
+    // Get the mouse position
+    Vector2 mousePosition = GetMousePosition();
+    mousePosition.x -= this->size.x / 2;
+    mousePosition.y -= this->size.y / 2;
+
+    this->SetPosition(mousePosition);
 }
 
 void Drag::drawPoints()
@@ -73,4 +51,16 @@ void Drag::drawPoints()
     DrawCircle(this->position.x + this->size.x, this->position.y, 5, BLACK);
     DrawCircle(this->position.x, this->position.y + this->size.y, 5, BLACK);
     DrawCircle(this->position.x + this->size.x, this->position.y + this->size.y, 5, BLACK);
+}
+
+bool Drag::IsCollidingWithSelf(std::vector<Drag> &drags)
+{
+    for (auto &drag : drags)
+    {
+        if (this->CheckCollision(drag))
+        {
+            return true;
+        }
+    }
+    return false;
 }

@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "collider.hpp"
+#include <vector>
 
 bool Collider::CheckCollision(Collider& other) {
     if (CheckCollisionRecs(
@@ -10,6 +11,15 @@ bool Collider::CheckCollision(Collider& other) {
     }
     return false;
 }
+
+// bool Collider::CheckCollisions(std::vector<Collider*> & others) {
+//     for (auto& other : others) {
+//         if (CheckCollision(other)) {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
 
 bool Collider::IsMouseOver() {
     Vector2 mousePosition = GetMousePosition();

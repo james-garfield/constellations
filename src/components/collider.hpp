@@ -2,6 +2,7 @@
 
 #include "raylib.h"
 #include "object.hpp"
+#include <vector>
 
 class Collider : public Object
 {

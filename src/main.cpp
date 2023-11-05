@@ -1,29 +1,31 @@
 /*******************************************************************************************
-*
-*   raylib [core] example - Basic window
-*
-*   Welcome to raylib!
-*
-*   To test examples, just press F6 and execute raylib_compile_execute script
-*   Note that compiled executable is placed in the same folder as .c file
-*
-*   You can find all basic examples on C:\raylib\raylib\examples folder or
-*   raylib official webpage: www.raylib.com
-*
-*   Enjoy using raylib. :)
-*
-*   Example originally created with raylib 1.0, last time updated with raylib 1.0
-*
-*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software
-*
-*   Copyright (c) 2013-2023 Ramon Santamaria (@raysan5)
-*
-********************************************************************************************/
+ *
+ *   raylib [core] example - Basic window
+ *
+ *   Welcome to raylib!
+ *
+ *   To test examples, just press F6 and execute raylib_compile_execute script
+ *   Note that compiled executable is placed in the same folder as .c file
+ *
+ *   You can find all basic examples on C:\raylib\raylib\examples folder or
+ *   raylib official webpage: www.raylib.com
+ *
+ *   Enjoy using raylib. :)
+ *
+ *   Example originally created with raylib 1.0, last time updated with raylib 1.0
+ *
+ *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+ *   BSD-like license that allows static linking with closed source software
+ *
+ *   Copyright (c) 2013-2023 Ramon Santamaria (@raysan5)
+ *
+ ********************************************************************************************/
 
 #include "raylib.h"
 #include "drag.hpp"
 #include "drag_icon.hpp"
+#include "oobs.hpp"
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -31,10 +33,13 @@
 
 namespace fs = std::filesystem;
 
-std::vector<Drag> dragObjects;
 std::vector<DragIcon> dragIcons;
+std::vector<Drag> dragObjects;
+int zIndex = 0;
+// Observerrs
 
 void InitDragIcons();
+void UpdateDragLogic();
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -48,7 +53,7 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Constellations");
 
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Allow user to resize window
@@ -58,21 +63,22 @@ int main(void)
     InitDragIcons();
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        for (auto& dragObject : dragObjects)
+        UpdateDragLogic();
+        for (auto &drag : dragObjects)
         {
-            dragObject.Update();
+            drag.Update();
         }
-        for (auto& dragIcon : dragIcons)
+
+        for (auto &dragIcon : dragIcons)
         {
             dragIcon.Update();
             // If our dragIcon has a child, add it to the dragObjects vector and delete the child.
             if (dragIcon.child != NULL)
             {
-                std::cout << "Not null";
                 dragObjects.push_back(*dragIcon.child);
                 dragIcon.child = NULL;
             }
@@ -84,16 +90,17 @@ int main(void)
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
-            
-            for (auto& dragObject : dragObjects)
-            {
+        ClearBackground(RAYWHITE);
+
+        // Draw the drag objects
+        for (auto &dragObject : dragObjects)
+        {
                 dragObject.Draw();
-            }
-            for (auto& dragIcon : dragIcons)
-            {
-                dragIcon.Draw();
-            }
+        }
+        for (auto &dragIcon : dragIcons)
+        {
+            dragIcon.Draw();
+        }
 
         EndDrawing();
         //----------------------------------------------------------------------------------
@@ -101,7 +108,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
+    CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
     return 0;
@@ -114,13 +121,18 @@ void InitDragIcons()
     fs::path directoryPath("assets/images");
 
     // Check if the path exists and is a directory
-    if (fs::exists(directoryPath) && fs::is_directory(directoryPath)) {
-        for (const auto& entry : fs::directory_iterator(directoryPath)) {
-            if (fs::is_regular_file(entry.path())) {
+    if (fs::exists(directoryPath) && fs::is_directory(directoryPath))
+    {
+        for (const auto &entry : fs::directory_iterator(directoryPath))
+        {
+            if (fs::is_regular_file(entry.path()))
+            {
                 filePaths.push_back(entry.path().string());
             }
         }
-    } else {
+    }
+    else
+    {
         std::cout << "Invalid directory path or doesn't exist." << std::endl;
     }
 
@@ -135,15 +147,37 @@ void InitDragIcons()
         // Based on columns and rows, calculate position
         Vector2 position = {startX + (size.x * (i % columns)), startY + (size.y * (i / columns))};
 
-        DragIcon* icon = new DragIcon(position, size, filePaths[i]);
-        
+        DragIcon *icon = new DragIcon(position, size, filePaths[i]);
+
         dragIcons.push_back(*icon);
 
         delete icon;
     }
 
-    for (auto& dragIcon : dragIcons)
+    for (auto &dragIcon : dragIcons)
     {
         std::cout << dragIcon.filename << std::endl;
+    }
+}
+
+void UpdateDragLogic()
+{
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        for (auto &drag : dragObjects)
+        {
+            if (drag.IsMouseOver() && !drag.IsCollidingWithSelf(dragObjects))
+            {
+                drag.SetIsDragging(true);
+                break;
+            }
+        }
+    }
+    else
+    {
+        for (auto &drag : dragObjects)
+        {
+            drag.SetIsDragging(false);
+        }
     }
 }
