@@ -1,11 +1,26 @@
 #include "raylib.h"
 #include "drag.hpp"
 #include <iostream>
+#include <string>
+
+
+void Drag::Init(Vector2 position, Vector2 size, std::string filename)
+{
+        this->SetPosition(position);
+    this->SetSize(size);
+    this->SetTexture(filename);
+}
 
 void Drag::Draw()
 {
     // DrawTexture
     DrawTexture(this->texture, this->position.x, this->position.y, WHITE);
+
+    if (this->isActive || this->isResizing) 
+    {
+        // Draw the points
+        drawPoints();
+    }
 }
 
 void Drag::Update()
@@ -15,13 +30,21 @@ void Drag::Update()
     this->texture.width = this->size.x;
 
     // Check if the mouse is over the Drag object
-    if (this->isMouseOver())
+    if (this->IsMouseOver())
     {
-        // Check if the left mouse button is pressed
-        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
+        // If is currently not dragging, check if the left mouse button is pressed
+        if (!this->isDragging)
         {
-            this->isDragging = true;
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+            {
+                // Check if the left mouse button is still being held down
+                if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
+                {
+                    this->isDragging = true;
+                }
+            }
         }
+
     }
     // Check if the left mouse button is released
     if (IsMouseButtonUp(MOUSE_LEFT_BUTTON))
@@ -41,27 +64,11 @@ void Drag::Update()
     }
 }
 
-bool Drag::isMouseOver()
+void Drag::drawPoints()
 {
-    Vector2 mousePosition = GetMousePosition();
-    return CheckCollisionPointRec(mousePosition, {this->position.x, this->position.y, this->size.x, this->size.y});
-}
-
-void Drag::SetTexture(const char *filename)
-{
-    // if the current texture is not empty unload it
-    if (this->texture.id != 0)
-    {
-        UnloadTexture(this->texture);
-    }
-
-    std::cout << "Loading Texture " << filename << "\n";
-    // LoadTexture
-    this->texture = LoadTexture(filename);
-
-    // If the texture is not loaded, print error
-    if (this->texture.id == 0)
-    {
-        std::cout << "Error loading texture " << filename << "\n";
-    }
+    // Draw 4 points on the rectangle
+    DrawCircle(this->position.x, this->position.y, 5, BLACK);
+    DrawCircle(this->position.x + this->size.x, this->position.y, 5, BLACK);
+    DrawCircle(this->position.x, this->position.y + this->size.y, 5, BLACK);
+    DrawCircle(this->position.x + this->size.x, this->position.y + this->size.y, 5, BLACK);
 }

@@ -12,7 +12,12 @@ public:
     bool CheckCollision(Collider &other);
 
     /**
-     * Handle collision with another object
+     * Check is mouse over said object.
      */
-    virtual void OnCollision(Collider &other) = 0;
+    bool IsMouseOver();
+
+    // /**
+    //  * Handle collision with another object
+    //  */
+    // virtual void OnCollision(Collider &other) = 0;
 };

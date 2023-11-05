@@ -10,3 +10,8 @@ bool Collider::CheckCollision(Collider& other) {
     }
     return false;
 }
+
+bool Collider::IsMouseOver() {
+    Vector2 mousePosition = GetMousePosition();
+    return CheckCollisionPointRec(mousePosition, { this->position.x, this->position.y, this->size.x, this->size.y });
+}

@@ -14,12 +14,16 @@ files:
     - src/components/object.cpp
     - src/components/collider.cpp
     - src/components/drag.cpp
+    - src/observers/ontop/obs.cpp
+    - src/observers/ontop/sub.cpp
     - src/main.cpp
 
 # Where are the header files located?
 includes:
-    - C:/Users/jorda/Documents/vcpkg/installed/x64-windows/include
-    - src/components
+   - raylib/src
+   - src/components
+   - src/observers
+   - src/observers/ontop
 
 # Not to be confused with libraries, these are the paths to the libraries.
 libs:

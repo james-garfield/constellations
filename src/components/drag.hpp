@@ -1,12 +1,13 @@
 #pragma once
 
 #include "raylib.h"
-#include "object.hpp"
+#include "collider.hpp"
+#include <string>
 
-class Drag : public Object
+class Drag : public Collider
 {
 public:
-    // No constructor or destructor needed
+    void Init(Vector2 position, Vector2 size, std::string filename);
 
     /**
      * Updates the Drag object state.
@@ -16,10 +17,6 @@ public:
      * Draws the Drag object.
      */
     void Draw() override;
-    /**
-     * Load a texture for the Drag object.
-     */
-    void SetTexture(const char *filename);
 
 private:
     /**
@@ -28,12 +25,18 @@ private:
     bool isDragging = false;
 
     /**
-     * The "Image" for the Drag.
+     * Draw the 4 points of the rectangle. To be used for resizing.
      */
-    Texture2D texture;
+    void drawPoints();
 
     /**
-     * Check if the mouse is over the Drag object.
-    */
-    bool isMouseOver();
+     * Is the object active. Not to be confused with isDragging.
+     */
+    bool isActive = false;
+
+    /**
+     * Is the object being resized?
+     */
+    bool isResizing = false;
 };
+

@@ -23,9 +23,18 @@
 
 #include "raylib.h"
 #include "drag.hpp"
+#include "drag_icon.hpp"
 #include <iostream>
+#include <vector>
+#include <string>
+#include <filesystem>
 
-Drag testImage = Drag();
+namespace fs = std::filesystem;
+
+std::vector<Drag> dragObjects;
+std::vector<DragIcon> dragIcons;
+
+void InitDragIcons();
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -46,16 +55,28 @@ int main(void)
     // NOTE: This functionality is not available on Android or HTML5 platforms
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
-    testImage.SetSize({100, 100});
-    testImage.SetPosition({screenWidth / 2, screenHeight / 2});
-    testImage.SetTexture("assets/images/person.png");
+    InitDragIcons();
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
-        testImage.Update();
+        for (auto& dragObject : dragObjects)
+        {
+            dragObject.Update();
+        }
+        for (auto& dragIcon : dragIcons)
+        {
+            dragIcon.Update();
+            // If our dragIcon has a child, add it to the dragObjects vector and delete the child.
+            if (dragIcon.child != NULL)
+            {
+                std::cout << "Not null";
+                dragObjects.push_back(*dragIcon.child);
+                dragIcon.child = NULL;
+            }
+        }
 
         //----------------------------------------------------------------------------------
 
@@ -64,8 +85,15 @@ int main(void)
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
-            testImage.Draw();
-            // testImage.ShowRectangle(BLACK);
+            
+            for (auto& dragObject : dragObjects)
+            {
+                dragObject.Draw();
+            }
+            for (auto& dragIcon : dragIcons)
+            {
+                dragIcon.Draw();
+            }
 
         EndDrawing();
         //----------------------------------------------------------------------------------
@@ -77,4 +105,43 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     return 0;
+}
+
+void InitDragIcons()
+{
+    std::vector<std::string> filePaths;
+    // Load images from assets folder
+    fs::path directoryPath("assets/images");
+
+    // Check if the path exists and is a directory
+    if (fs::exists(directoryPath) && fs::is_directory(directoryPath)) {
+        for (const auto& entry : fs::directory_iterator(directoryPath)) {
+            if (fs::is_regular_file(entry.path())) {
+                filePaths.push_back(entry.path().string());
+            }
+        }
+    } else {
+        std::cout << "Invalid directory path or doesn't exist." << std::endl;
+    }
+
+    int startX = 10;
+    int startY = 10;
+    int columns = 2;
+
+    for (int i = 0; i < filePaths.size(); i++)
+    {
+        Vector2 size = {100, 100};
+
+        // Based on columns and rows, calculate position
+        Vector2 position = {startX + (size.x * (i % columns)), startY + (size.y * (i / columns))};
+
+        DragIcon icon = DragIcon(position, size, filePaths[i]); 
+        
+        dragIcons.push_back(icon);
+    }
+
+    for (auto& dragIcon : dragIcons)
+    {
+        std::cout << dragIcon.filename << std::endl;
+    }
 }
