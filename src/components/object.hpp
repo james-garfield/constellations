@@ -38,6 +38,7 @@ public:
      * Draws the Drag object.
      */
     virtual void Draw() = 0;
+    
     /**
      * Show the object's representation on the screen.
      */

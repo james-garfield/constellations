@@ -135,9 +135,11 @@ void InitDragIcons()
         // Based on columns and rows, calculate position
         Vector2 position = {startX + (size.x * (i % columns)), startY + (size.y * (i / columns))};
 
-        DragIcon icon = DragIcon(position, size, filePaths[i]); 
+        DragIcon* icon = new DragIcon(position, size, filePaths[i]);
         
-        dragIcons.push_back(icon);
+        dragIcons.push_back(*icon);
+
+        delete icon;
     }
 
     for (auto& dragIcon : dragIcons)

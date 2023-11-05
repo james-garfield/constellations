@@ -3,7 +3,7 @@
 
 compiler: clang++ # Change to whatever will compile your c/c++ code. You can even use emscripten!
 name: Constellations # The name of the project, used for debugging.
-output: builc/g++/constellations # The output file.
+output: bin/constellations # The output file.
 
 # These are the flags that will be passed to the compiler, such as -std=c++17
 flags: 
@@ -20,16 +20,17 @@ files:
     - src/components/object.cpp
     - src/components/collider.cpp
     - src/components/drag.cpp
-    - src/observers/ontop/obs.cpp
-    - src/observers/ontop/sub.cpp
+    - src/components/drag_icon.cpp
+    # - src/observers/ontop/obs.cpp
+    # - src/observers/ontop/sub.cpp
     - src/main.cpp
 
 # Where are the header files located?
 includes:
    - raylib/src
    - src/components
-   - src/observers
-   - src/observers/ontop
+#    - src/observers
+#    - src/observers/ontop
 
 # Not to be confused with libraries, these are the paths to the libraries.
 # libs:
@@ -46,5 +47,5 @@ shell:
     # before:
     #     - echo "Hello, world!"
     after:
-        - ./constellations # Usually you want to run the program after building it.
+        - ./bin/constellations # Usually you want to run the program after building it.
 

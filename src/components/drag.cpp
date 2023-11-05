@@ -37,24 +37,26 @@ void Drag::Update()
         {
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
+                std::cout << "Pressed\n";
                 // Check if the left mouse button is still being held down
                 if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
                 {
+                    std::cout << "Down\n";
                     this->isDragging = true;
                 }
             }
         }
 
     }
-    // Check if the left mouse button is released
-    if (IsMouseButtonUp(MOUSE_LEFT_BUTTON))
-    {
-        this->isDragging = false;
-    }
-
     // If dragging, update the position to the mouse position
     if (this->isDragging)
     {
+        // Check if the left mouse button is released
+        if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+        {
+            this->isDragging = false;
+            return;
+        }
         // Center the image on the actual mouse pointer.
         Vector2 mousePosition = GetMousePosition();
         mousePosition.x -= this->size.x / 2;

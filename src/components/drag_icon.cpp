@@ -2,6 +2,7 @@
 #include "drag.hpp"
 #include "drag_icon.hpp"
 #include <string>
+#include <iostream>
 
 DragIcon::DragIcon(Vector2 position, Vector2 size, std::string filename)
 {
