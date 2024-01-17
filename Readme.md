@@ -1,6 +1,8 @@
 # Constellations
 Constellations is a simple, easy to use, and lightweight application for creating and managing your own constellations. Constellations is written in C++ and uses the [raylib](https://www.raylib.com/) library for graphics and input. Constellations is currently in development and is not yet ready for use.
 
+![constellations](https://github.com/jordan-castro/constellations/assets/86361283/bcf879f7-d57e-402f-b0e1-8c2fde433889)
+
 ## Features
 - Create and manage your own constellations
 - Save and load constellations
