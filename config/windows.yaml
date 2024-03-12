@@ -1,9 +1,9 @@
 
 # This handles building the project
 
-compiler: g++ # Change to whatever will compile your c/c++ code. You can even use emscripten!
+compiler: clang++ # Change to whatever will compile your c/c++ code. You can even use emscripten!
 name: Constellations # The name of the project, used for debugging.
-output: build/g++/constellations.exe # The output file.
+output: bin/g++/constellations.exe # The output file.
 
 # These are the flags that will be passed to the compiler, such as -std=c++17
 flags:
@@ -14,16 +14,13 @@ files:
     - src/components/object.cpp
     - src/components/collider.cpp
     - src/components/drag.cpp
-    - src/observers/ontop/obs.cpp
-    - src/observers/ontop/sub.cpp
+    - src/components/drag_icon.cpp
     - src/main.cpp
 
 # Where are the header files located?
 includes:
-   - raylib/src
-   - src/components
-   - src/observers
-   - src/observers/ontop
+    - C:/Users/jorda/Documents/vcpkg/installed/x64-windows/include
+    - src/components
 
 # Not to be confused with libraries, these are the paths to the libraries.
 libs:
@@ -39,5 +36,5 @@ libraries:
 # Also, you can run shell commands after building.
 shell:
     after:
-        - build\g++\constellations.exe # Usually you want to run the program after building it.
+        - bin\g++\constellations.exe # Usually you want to run the program after building it.
 

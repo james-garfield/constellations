@@ -24,7 +24,6 @@
 #include "raylib.h"
 #include "drag.hpp"
 #include "drag_icon.hpp"
-#include "oobs.hpp"
 
 #include <iostream>
 #include <vector>
@@ -95,7 +94,7 @@ int main(void)
         // Draw the drag objects
         for (auto &dragObject : dragObjects)
         {
-                dragObject.Draw();
+            dragObject.Draw();
         }
         for (auto &dragIcon : dragIcons)
         {
@@ -164,13 +163,26 @@ void UpdateDragLogic()
 {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
     {
-        for (auto &drag : dragObjects)
-        {
-            if (drag.IsMouseOver() && !drag.IsCollidingWithSelf(dragObjects))
-            {
-                drag.SetIsDragging(true);
-                break;
+        int indexOfOrder = -1;
+        for (int i = dragObjects.size() - 1; i > -1; i--) {
+            if (!dragObjects[i].IsMouseOver()) {
+                continue;
             }
+
+            dragObjects[i].SetIsDragging(true);
+            // Re order drags
+            indexOfOrder = i;
+            break;
+        }
+
+        // If index is greater than 0, re-order the vector
+        if (indexOfOrder != -1) {
+            std::vector<Drag> newDragObjects = dragObjects;
+            newDragObjects[dragObjects.size() - 1] = dragObjects[indexOfOrder];
+            newDragObjects[indexOfOrder] = dragObjects[dragObjects.size() - 1];
+
+            // Update dragObjects
+            dragObjects = newDragObjects;
         }
     }
     else
