@@ -24,8 +24,3 @@ function saveCanvas() {
 }
 
 document.getElementById("saveButton").onclick = saveCanvas;
-
-// const image = Image();
-// image.src = canvas.toDataURL();
-
-// document.body.appendChild(image);
