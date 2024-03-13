@@ -1,0 +1,49 @@
+
+# This handles building the project
+
+compiler: em++ # Change to whatever will compile your c/c++ code. You can even use emscripten!
+name: Constellations # The name of the project, used for debugging.
+output: bin/em/app.html # The output file.
+
+# These are the flags that will be passed to the compiler, such as -std=c++17
+flags: 
+    - std=c++17
+    - Os
+    - Wall
+    - s USE_GLFW=3
+    - s ASYNCIFY
+    - s FETCH
+
+# The c/c++ files that will be compiled in order. 
+files: 
+    - C:/raylib/raylib/src/libraylib.a
+    - src/components/object.cpp
+    - src/components/collider.cpp
+    - src/components/drag.cpp
+    - src/components/drag_icon.cpp
+    - src/main.cpp
+
+# Where are the header files located?
+includes:
+    - C:/Users/jorda/Documents/vcpkg/installed/x64-windows/include
+    - src/components
+
+# Not to be confused with libraries, these are the paths to the libraries.
+libs:
+    - C:/Users/jorda/Documents/vcpkg/installed/x64-windows/lib
+    - C:/raylib/raylib/src/
+
+# These are the libraries that will be linked to the project. Path must be specified in libs.
+libraries: 
+    - raylib
+
+# Shell commands to run before or after building.
+# This is more (CMake) style, where you can run shell commands before building. 
+# Also, you can run shell commands after building.
+# shell:
+#     before:
+#         - echo "Hello, world!"
+#     after:
+#         - app.exe # Usually you want to run the program after building it.
+#         - echo "Goodbye, world!"
+

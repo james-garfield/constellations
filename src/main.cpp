@@ -1,25 +1,3 @@
-/*******************************************************************************************
- *
- *   raylib [core] example - Basic window
- *
- *   Welcome to raylib!
- *
- *   To test examples, just press F6 and execute raylib_compile_execute script
- *   Note that compiled executable is placed in the same folder as .c file
- *
- *   You can find all basic examples on C:\raylib\raylib\examples folder or
- *   raylib official webpage: www.raylib.com
- *
- *   Enjoy using raylib. :)
- *
- *   Example originally created with raylib 1.0, last time updated with raylib 1.0
- *
- *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
- *   BSD-like license that allows static linking with closed source software
- *
- *   Copyright (c) 2013-2023 Ramon Santamaria (@raysan5)
- *
- ********************************************************************************************/
 
 #include "raylib.h"
 #include "drag.hpp"
@@ -29,16 +7,16 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+#include <emscripten/fetch.h>
 
 namespace fs = std::filesystem;
 
 std::vector<DragIcon> dragIcons;
 std::vector<Drag> dragObjects;
-int zIndex = 0;
-// Observerrs
 
 void InitDragIcons();
 void UpdateDragLogic();
+bool IsMouseOverADragObject();
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -113,40 +91,47 @@ int main(void)
     return 0;
 }
 
+void imageListDownloadSucceeded(emscripten_fetch_t *fetch) {
+    printf("Finished downloading %llu bytes from URL %s.\n", fetch->numBytes, fetch->url);
+    // The data is now available at fetch->data[0] through fetch->data[fetch->numBytes-1];
+    
+    std::vector<std::string> imageUrls;
+
+    emscripten_fetch_close(fetch); // Free data associated with the fetch.
+}
+
 void InitDragIcons()
 {
-    std::vector<std::string> filePaths;
-    // Load images from assets folder
-    fs::path directoryPath("assets/images");
+    std::vector<std::string> imageBytes;
 
-    // Check if the path exists and is a directory
-    if (fs::exists(directoryPath) && fs::is_directory(directoryPath))
-    {
-        for (const auto &entry : fs::directory_iterator(directoryPath))
-        {
-            if (fs::is_regular_file(entry.path()))
-            {
-                filePaths.push_back(entry.path().string());
-            }
-        }
-    }
-    else
-    {
-        std::cout << "Invalid directory path or doesn't exist." << std::endl;
-    }
+    // Make API calls
+    std::cout << "From EMSCRIPTEN" << std::endl;
+
+    emscripten_fetch_attr_t attr;
+    emscripten_fetch_attr_init(&attr);
+    strcpy(attr.requestMethod, "GET");
+    attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
+    attr.onsuccess = imageListDownloadSucceeded;
+    emscripten_fetch(&attr, "http://localhost:8080/api.php?method=images"); // Blocks here until the operation is complete.
+    // if (fetch->status == 200) {
+    //     printf("Finished downloading %llu bytes from URL %s.\n", fetch->numBytes, fetch->url);
+    //     // The data is now available at fetch->data[0] through fetch->data[fetch->numBytes-1];
+    // } else {
+    //     printf("Downloading %s failed, HTTP failure status code: %d.\n", fetch->url, fetch->status);
+    // }
 
     int startX = 10;
     int startY = 10;
     int columns = 2;
 
-    for (int i = 0; i < filePaths.size(); i++)
+    for (int i = 0; i < imageBytes.size(); i++)
     {
         Vector2 size = {100, 100};
 
         // Based on columns and rows, calculate position
         Vector2 position = {startX + (size.x * (i % columns)), startY + (size.y * (i / columns))};
 
-        DragIcon *icon = new DragIcon(position, size, filePaths[i]);
+        DragIcon *icon = new DragIcon(position, size, imageBytes[i]);
 
         dragIcons.push_back(*icon);
 
@@ -163,20 +148,58 @@ void UpdateDragLogic()
 {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
     {
+        // Check if any Drag object is currently being dragged
+        for (auto &drag : dragObjects)
+        {
+            if (drag.IsDragging())
+            {
+                // End the UpdateDragLogic call.
+                return;
+            }
+        }
+
+        // Check if mouse is over, if not, set all drags to active false
+        if (!IsMouseOverADragObject())
+        {
+            for (auto &drag : dragObjects)
+            {
+                drag.SetIsActive(false);
+            }
+
+            // End update call.
+            return;
+        }
+
         int indexOfOrder = -1;
-        for (int i = dragObjects.size() - 1; i > -1; i--) {
-            if (!dragObjects[i].IsMouseOver()) {
+        for (int i = dragObjects.size() - 1; i > -1; i--)
+        {
+            if (!dragObjects[i].IsMouseOver())
+            {
                 continue;
             }
 
             dragObjects[i].SetIsDragging(true);
+            dragObjects[i].SetIsActive(true);
+
+            // Unactivate all other drags.
+            for (auto &drag : dragObjects)
+            {
+                if (drag == dragObjects[i])
+                {
+                    continue;
+                }
+
+                drag.SetIsActive(false);
+            }
+
             // Re order drags
             indexOfOrder = i;
             break;
         }
 
         // If index is greater than 0, re-order the vector
-        if (indexOfOrder != -1) {
+        if (indexOfOrder != -1)
+        {
             std::vector<Drag> newDragObjects = dragObjects;
             newDragObjects[dragObjects.size() - 1] = dragObjects[indexOfOrder];
             newDragObjects[indexOfOrder] = dragObjects[dragObjects.size() - 1];
@@ -192,4 +215,23 @@ void UpdateDragLogic()
             drag.SetIsDragging(false);
         }
     }
+}
+
+/**
+ * @brief Is the mouse currently over a Drag object?
+ *
+ * @return true
+ * @return false
+ */
+bool IsMouseOverADragObject()
+{
+    for (auto &drag : dragObjects)
+    {
+        if (drag.IsMouseOver())
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
