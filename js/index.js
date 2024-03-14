@@ -6,9 +6,7 @@ canvas.width = window.innerWidth - 500;
 canvas.height = window.innerHeight;
 
 // The fabric canvas object
-var fCanvas = new fabric.Canvas('canvas', {
-    backgroundColor: '000',
-});
+var fCanvas = new fabric.Canvas('canvas');
 window.fCanvas = fCanvas;
 
 // Load images into the DOM
