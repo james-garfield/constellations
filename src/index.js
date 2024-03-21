@@ -1,4 +1,5 @@
-import { getImages, loadImages } from "./load_images.js";
+import { loadImages } from "./load_images.js";
+import images from "./images.js";
 
 // The canvas document object
 const canvas = document.getElementById('canvas');
@@ -10,10 +11,17 @@ var fCanvas = new fabric.Canvas('canvas');
 window.fCanvas = fCanvas;
 
 // Load images into the DOM
-getImages("").then((value) => {
-    console.log(value);
-    loadImages(value, 2);
-});
+for (let i = 0; i < images.rows.length; i++) {
+    loadImages(images.rows[i], {
+        width: 50,
+        height: 50
+    }, images.ending, images.dir);
+}
+// Final row with arrows
+loadImages(images.lastRow.row, {
+    width: 50,
+    height: 50
+}, images.lastRow.ending, images.lastRow.dir);
 
 function saveCanvas() {
     const image = new Image();
