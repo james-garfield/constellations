@@ -1,14 +1,9 @@
 import { loadImages } from "./load_images.js";
 import images from "./images.js";
+import { loadCanvas } from "./load_canvas.js";
 
-// The canvas document object
-const canvas = document.getElementById('canvas');
-canvas.width = window.innerWidth - 500;
-canvas.height = window.innerHeight;
-
-// The fabric canvas object
-var fCanvas = new fabric.Canvas('canvas');
-window.fCanvas = fCanvas;
+// Load the canvas
+loadCanvas();
 
 // Load images into the DOM
 for (let i = 0; i < images.rows.length; i++) {
@@ -23,10 +18,22 @@ loadImages(images.lastRow.row, {
     height: 50
 }, images.lastRow.ending, images.lastRow.dir);
 
+// var download = function(){
+//     var link = document.createElement('a');
+//     link.download = 'filename.png';
+//     link.href = document.getElementById('canvas').toDataURL()
+//     link.click();
+// }
+  
 function saveCanvas() {
-    const image = new Image();
-    image.src = canvas.toDataURL();
-    document.body.appendChild(image);
+    const link = document.createElement('a');
+    link.download = 'constellation.png';
+    link.href = canvas.toDataURL();
+    link.click();
+}
+function resetCanvas() {
+    loadCanvas();
 }
 
 document.getElementById("saveButton").onclick = saveCanvas;
+document.getElementById("cancelButton").onclick = resetCanvas;

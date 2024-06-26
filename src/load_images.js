@@ -18,11 +18,14 @@ const loadImages = async (images, size, ending, dir) => {
             row.appendChild(col);
             continue;
         }
-        
+
+        imageElement.className = "img-thumbnail image-item";
+
         // Add the image
         imageElement.src = "/assets/images/" + dir + "/" + images[i] + ending;
-        imageElement.width = size.width;
-        imageElement.height = size.height;
+        imageElement.width = size.width * 1.5;
+        imageElement.height = size.height * 1.5;
+
         imageElement.onclick = () => {
             fabric.Image.fromURL(imageElement.src, (oImg) => {
                 oImg.scaleToWidth(size.width * 2);
