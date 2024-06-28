@@ -14,7 +14,6 @@ const loadCanvas = () => {
         oImg.scaleToWidth(canvas.width, true);
         fCanvas.setBackgroundImage(oImg, fCanvas.renderAll.bind(fCanvas));
     });
-
 }
 
 export { loadCanvas }

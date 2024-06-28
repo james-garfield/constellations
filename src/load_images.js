@@ -18,6 +18,8 @@ const loadImages = async (images, size, ending, dir) => {
             row.appendChild(col);
             continue;
         }
+        // Set ID
+        imageElement.id = images[i];
 
         imageElement.className = "img-thumbnail image-item";
 
@@ -28,11 +30,16 @@ const loadImages = async (images, size, ending, dir) => {
 
         imageElement.onclick = () => {
             fabric.Image.fromURL(imageElement.src, (oImg) => {
+                // Add to selected images array.
+                window.selectedImages.push(oImg);
+
+                // Change size.
                 oImg.scaleToWidth(size.width * 2);
                 oImg.scaleToHeight(size.height * 2);
+                
+                // Add to canvas
                 window.fCanvas.add(oImg);
             });
-
         };
 
         // Append to body

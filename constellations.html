@@ -47,38 +47,64 @@
         .canvas-container {
             position: relative;
         }
+
+        .context-menu {
+            position: absolute;
+            text-align: center;
+            background: lightgray;
+            border: 1px solid black;
+        }
+
     </style>
 </head>
 
-<body style="background-color: black;">
-    <!-- <h1>Constellations</h1> -->
-    <div class="container-fluid con">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="row" id="images">
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="canvas-container">
-                    <canvas id="canvas"></canvas>
+<body style="background-color: #ced4da;">
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu row vertical" style="display: none;">
+        <div class="col">
+            <p>Test</p>
+        </div>
+    </div>
+
+    <div style="padding-left: 100px;">
+        <br />
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <h1 style="color: black;">Constellations</h1>
                 </div>
             </div>
         </div>
-        <!-- A row with a cancel button and save button -->
-        <div class="row justify-content-center" style="padding-top: 10px; padding-bottom: 10px;">
-            <div class="col-auto" style="padding: 0%;">
-                <button id="cancelButton" class="btn btn-danger">Clear</button>
+        <div class="container-fluid con">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row" id="images">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="canvas-container">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
             </div>
-            <div class="col-auto" style="padding: 10px;"></div>
-            <div class="col-auto" style="padding: 0%;">
-                <button id="saveButton" class="btn btn-primary" style="margin: 0%;">Save</button>
+            <!-- A row with a cancel button and save button -->
+            <div class="row justify-content-center" style="padding-top: 10px; padding-bottom: 10px;">
+                <div class="col-auto" style="padding: 0%;">
+                    <button id="cancelButton" class="btn btn-danger">Clear</button>
+                </div>
+                <div class="col-auto" style="padding: 10px;"></div>
+                <div class="col-auto" style="padding: 0%;">
+                    <button id="saveButton" class="btn btn-primary" style="margin: 0%;">Save</button>
+                </div>
             </div>
         </div>
     </div>
     <script type="module" src="src/index.js"></script>
+    <script src="src/document.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
 </body>
 
 </html>

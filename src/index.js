@@ -5,6 +5,9 @@ import { loadCanvas } from "./load_canvas.js";
 // Load the canvas
 loadCanvas();
 
+window.selectedImages = [];
+window.actions = [];
+
 // Load images into the DOM
 for (let i = 0; i < images.rows.length; i++) {
     loadImages(images.rows[i], {
@@ -17,22 +20,21 @@ loadImages(images.lastRow.row, {
     width: 50,
     height: 50
 }, images.lastRow.ending, images.lastRow.dir);
-
-// var download = function(){
-//     var link = document.createElement('a');
-//     link.download = 'filename.png';
-//     link.href = document.getElementById('canvas').toDataURL()
-//     link.click();
-// }
   
 function saveCanvas() {
+    // Deselect any selected images
+    window.fCanvas.discardActiveObject().renderAll();
+
     const link = document.createElement('a');
     link.download = 'constellation.png';
     link.href = canvas.toDataURL();
     link.click();
 }
 function resetCanvas() {
-    loadCanvas();
+    // Remove all selectedImages
+    for (const image of selectedImages) {
+        window.fCanvas.remove(image);
+    }
 }
 
 document.getElementById("saveButton").onclick = saveCanvas;
