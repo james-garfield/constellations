@@ -2,6 +2,8 @@ import { loadImages } from "./load_images.js";
 import images from "./images.js";
 import { loadCanvas } from "./load_canvas.js";
 
+window.optionsMenu = document.getElementById("optionsMenu");
+
 // Load the canvas
 loadCanvas();
 
@@ -31,6 +33,7 @@ function saveCanvas() {
     link.click();
 }
 function resetCanvas() {
+    window.optionsMenu.style.display = "none";
     // Remove all selectedImages
     for (const image of selectedImages) {
         window.fCanvas.remove(image);

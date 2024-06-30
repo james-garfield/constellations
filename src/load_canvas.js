@@ -14,6 +14,20 @@ const loadCanvas = () => {
         oImg.scaleToWidth(canvas.width, true);
         fCanvas.setBackgroundImage(oImg, fCanvas.renderAll.bind(fCanvas));
     });
+
+    // Add a object slected listener
+    fCanvas.on('mouse:down', function (e) {
+        console.log(fCanvas.getActiveObject());
+        const obj = fCanvas.getActiveObject();
+        // Check if we have an active object
+        if (obj !== undefined && obj !== null) {
+            // SHOW THE OPTIONS
+            window.optionsMenu.style = "opacity: 1";
+        } else {
+            // HIDE THE OPTIONS
+            window.optionsMenu.style = "opacity: 0";
+        }
+    })
 }
 
 export { loadCanvas }
