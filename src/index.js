@@ -26,6 +26,7 @@ loadImages(images.lastRow.row, {
 function saveCanvas() {
     // Deselect any selected images
     window.fCanvas.discardActiveObject().renderAll();
+    window.optionsMenu.style = "opacity: 0";
 
     const link = document.createElement('a');
     link.download = 'constellation.png';
@@ -33,7 +34,7 @@ function saveCanvas() {
     link.click();
 }
 function resetCanvas() {
-    window.optionsMenu.style.display = "none";
+    window.optionsMenu.style = "opacity: 0";
     // Remove all selectedImages
     for (const image of selectedImages) {
         window.fCanvas.remove(image);
