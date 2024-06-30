@@ -39,6 +39,7 @@ function resetCanvas() {
     for (const image of selectedImages) {
         window.fCanvas.remove(image);
     }
+    window.selectedImages = [];
 }
 
 document.getElementById("saveButton").onclick = saveCanvas;

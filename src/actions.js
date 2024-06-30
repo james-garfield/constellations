@@ -8,6 +8,7 @@ document.getElementById("copyButton").onclick = (e) => {
             top: clonedObj.top + 10,
             evented: true,
         });
+        window.selectedImages.push(clonedObj);
 
         window.fCanvas.add(clonedObj);
 
