@@ -2,6 +2,8 @@
  * Load images into the DOM
  */
 const loadImages = async (images, size, ending, dir) => {
+    console.log("Tesdt");
+    
     const row = document.createElement("div");
     row.className = "row horizontal"
 
@@ -24,7 +26,7 @@ const loadImages = async (images, size, ending, dir) => {
         imageElement.className = "img-thumbnail image-item";
 
         // Add the image
-        imageElement.src = "/assets/images/" + dir + "/" + images[i] + ending;
+        imageElement.src = "./assets/images/" + dir + "/" + images[i] + ending;
         imageElement.width = size.width * 1.5;
         imageElement.height = size.height * 1.5;
 
@@ -38,7 +40,8 @@ const loadImages = async (images, size, ending, dir) => {
                 oImg.scaleToHeight(size.height * 2);
                 
                 // Add to canvas
-                window.fCanvas.add(oImg);
+                window.fCanvas.add(oImg).setActiveObject(oImg);
+                window.optionsMenu.style = "opacity: 1";
             });
         };
 

@@ -9,7 +9,7 @@ const loadCanvas = () => {
     window.fCanvas = fCanvas;
 
     // Load the "CIRCULOS" image as a background
-    fabric.Image.fromURL('/assets/images/CIRCULOS.jpg', (oImg) => {
+    fabric.Image.fromURL('./assets/images/CIRCULOS.jpg', (oImg) => {
         oImg.scaleToHeight(canvas.height, true);
         oImg.scaleToWidth(canvas.width, true);
         fCanvas.setBackgroundImage(oImg, fCanvas.renderAll.bind(fCanvas));
@@ -17,7 +17,6 @@ const loadCanvas = () => {
 
     // Add a object slected listener
     fCanvas.on('mouse:down', function (e) {
-        console.log(fCanvas.getActiveObject());
         const obj = fCanvas.getActiveObject();
         // Check if we have an active object
         if (obj !== undefined && obj !== null) {
