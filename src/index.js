@@ -2,8 +2,6 @@ import { loadImages } from "./load_images.js";
 import images from "./images.js";
 import { loadCanvas } from "./load_canvas.js";
 
-window.optionsMenu = document.getElementById("optionsMenu");
-
 // Load the canvas
 loadCanvas();
 
@@ -26,7 +24,7 @@ loadImages(images.lastRow.row, {
 function saveCanvas() {
     // Deselect any selected images
     window.fCanvas.discardActiveObject().renderAll();
-    window.optionsMenu.style = "opacity: 0";
+    hideOptionsMenu();
 
     const link = document.createElement('a');
     link.download = 'constellation.canva';
@@ -41,7 +39,7 @@ function saveCanvas() {
 function downloadCanvas() {
     // Deselect any selected images
     window.fCanvas.discardActiveObject().renderAll();
-    window.optionsMenu.style = "opacity: 0";
+    hideOptionsMenu();
 
     const link = document.createElement('a');
     link.download = 'constellation.png';
@@ -50,7 +48,7 @@ function downloadCanvas() {
 }
 
 function resetCanvas() {
-    window.optionsMenu.style = "opacity: 0";
+    hideOptionsMenu();
     // Remove all selectedImages
     for (const image of selectedImages) {
         window.fCanvas.remove(image);
@@ -67,7 +65,8 @@ function addText() {
     })
 
     window.fCanvas.add(textbox).setActiveObject(textbox);
-    window.optionsMenu.style = "opacity: 1";
+    showOptionsMenu();
+    showTextOptionsMenu();
     window.selectedImages.push(textbox);
 }
 
@@ -104,3 +103,6 @@ document.getElementById("cancelButton").onclick = resetCanvas;
 document.getElementById("textButton").onclick = addText;
 document.getElementById("downloadButton").onclick = downloadCanvas;
 document.getElementById("uploadButton").onclick = uploadCanvas;
+
+hideOptionsMenu();
+hideTextOptionsMenu();

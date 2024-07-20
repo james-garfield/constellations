@@ -19,7 +19,7 @@ document.getElementById("copyButton").onclick = (e) => {
 
 document.getElementById("deleteButton").onclick = (e) => {
     window.fCanvas.remove(window.fCanvas.getActiveObject());
-    window.optionsMenu.style = "opacity: 0";
+    hideOptionsMenu();
 };
 
 document.getElementById("bringForwardButton").onclick = (e) => {
@@ -29,3 +29,35 @@ document.getElementById("bringForwardButton").onclick = (e) => {
 document.getElementById("sendBackwardButton").onclick = (e) => {
     window.fCanvas.getActiveObject().sendBackwards();
 };
+
+document.getElementById("textBgColor").addEventListener('input', function (evt) {
+    console.log(this.value);
+    // get active fcanvas element
+    let activeObject = window.fCanvas.getActiveObject();
+    if (activeObject) {
+        activeObject.set('backgroundColor', this.value);
+        activeObject.setCoords(); // Update coordinates and dimensions
+        window.fCanvas.renderAll();
+    }
+});
+document.getElementById("textFontColor").addEventListener('input', function (evt) {
+    console.log(this.value);
+    // get active fcanvas element
+    let activeObject = window.fCanvas.getActiveObject();
+    if (activeObject) {
+        activeObject.set('fill', this.value);
+        activeObject.setCoords(); // Update coordinates and dimensions
+        window.fCanvas.renderAll();
+    }
+});
+
+document.getElementById("changeTextBGColor").onclick = (e) => {
+    const textBgColorInput = document.getElementById("textBgColor");
+    // Ask for color
+    textBgColorInput.click();
+}
+
+document.getElementById("changeFontColor").onclick = (e) => {
+    const textFontColor = document.getElementById("textFontColor");
+    textFontColor.click();
+}

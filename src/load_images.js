@@ -2,8 +2,6 @@
  * Load images into the DOM
  */
 const loadImages = async (images, size, ending, dir) => {
-    console.log("Tesdt");
-    
     const row = document.createElement("div");
     row.className = "row horizontal"
 
@@ -41,7 +39,8 @@ const loadImages = async (images, size, ending, dir) => {
                 
                 // Add to canvas
                 window.fCanvas.add(oImg).setActiveObject(oImg);
-                window.optionsMenu.style = "opacity: 1";
+                showOptionsMenu();
+                // window.optionsMenu.style = "opacity: 1";
             });
         };
 

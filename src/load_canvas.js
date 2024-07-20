@@ -21,10 +21,18 @@ const loadCanvas = () => {
         // Check if we have an active object
         if (obj !== undefined && obj !== null) {
             // SHOW THE OPTIONS
-            window.optionsMenu.style = "opacity: 1";
+            showOptionsMenu();
+            console.log(obj.get('type'));
+            if (obj.get('type') === 'textbox') {
+                // Show the text meny options as well
+                showTextOptionsMenu();
+            } else {
+                hideTextOptionsMenu();
+            }
         } else {
             // HIDE THE OPTIONS
-            window.optionsMenu.style = "opacity: 0";
+            hideOptionsMenu();
+            hideTextOptionsMenu();
         }
     })
 }
