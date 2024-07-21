@@ -61,3 +61,12 @@ document.getElementById("changeFontColor").onclick = (e) => {
     const textFontColor = document.getElementById("textFontColor");
     textFontColor.click();
 }
+
+document.getElementById("makeTransparent").onclick = (e) => {
+    const activeObject = window.fCanvas.getActiveObject();
+    if (activeObject) {
+        activeObject.set('backgroundColor', 'transparent');
+        activeObject.setCoords();
+        window.fCanvas.renderAll();
+    }
+}

@@ -40,7 +40,6 @@ const loadImages = async (images, size, ending, dir) => {
                 // Add to canvas
                 window.fCanvas.add(oImg).setActiveObject(oImg);
                 showOptionsMenu();
-                // window.optionsMenu.style = "opacity: 1";
             });
         };
 
