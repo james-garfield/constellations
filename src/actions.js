@@ -20,6 +20,7 @@ document.getElementById("copyButton").onclick = (e) => {
 document.getElementById("deleteButton").onclick = (e) => {
     window.fCanvas.remove(window.fCanvas.getActiveObject());
     hideOptionsMenu();
+    hideTextOptionsMenu();
 };
 
 document.getElementById("bringForwardButton").onclick = (e) => {
